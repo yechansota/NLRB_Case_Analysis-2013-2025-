@@ -2,7 +2,7 @@
 
 -----
 
-## Motivation
+## Project Motivation
 
 Collective bargaining is a labor relations event that no HR practitioner can afford to ignore, regardless of industry or geography. Watching South Korea’s semiconductor sector experience a sharp surge in union organizing activity raised a question I could not let go: can the conditions that lead to union formation in the United States be detected and measured *before* a petition is filed, using publicly available data?
 
