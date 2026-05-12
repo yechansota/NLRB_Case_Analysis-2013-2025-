@@ -1,5 +1,4 @@
 # Predicting Unionization Risk from NLRB Case Data (2013 Q1 – 2025 Q3)
-
 -----
 
 ## Project Motivation
@@ -12,8 +11,8 @@ This project is my attempt to answer that question quantitatively. It is grounde
 
 ## Data Source
 
-**Source:** [NLRB Advanced Search](https://www.nlrb.gov/search/case) — official public case database
-**Records:** 266,608 cases after cleaning (289,750 raw records across three download batches)
+**Source:** [NLRB Advanced Search](https://www.nlrb.gov/search/case) — Official public case database 
+**Records:** 266,608 cases after cleaning (**289,750** raw records across three download batches)
 **Period:** January 2, 2013 – September 30, 2025
 **Scope:** All Unfair Labor Practice charges (CA, CB subtypes) and Representation petitions (RC subtype) filed in U.S. domestic jurisdictions
 
@@ -23,12 +22,10 @@ Every time a worker files a complaint against their employer (a “C-case”) or
 
 ## Data Cleaning
 
-NLRB case data covering 2013 through early 2026 was downloaded from the NLRB Advanced Search portal as a CSV export of 289,750 records. Date Filed and Date Closed were parsed from MM/DD/YYYY.
+NLRB case data covering 2013 through early 2026 was downloaded from the NLRB Advanced Search portal as a CSV export of 289,750 records.
+From the merged dataset, only the three case subtypes directly relevant to the new-union organizing pipeline were retained: **CA** (employer unfair labor practices, 190,456 cases), **CB** (union unfair labor practices, 51,950 cases), and **RC** (union representation election petitions, 24,202 cases). The following subtypes were excluded because they represent fundamentally different labor relations processes that would introduce noise into the organizing maturity model — RD (decertification petitions filed to *remove* an existing union), RM (employer-initiated election petitions), UC (unit clarification, an administrative procedure for existing bargaining units), UD (deauthorization petitions), AC (amendment of certification), and WH (wage-hour cases).
 
-From the merged dataset, only the three case subtypes directly relevant to the new-union organizing pipeline were retained: **CA** (Employer unfair labor practices, **190,456 cases**), **CB** (Union unfair labor practices, **51,950 cases**), and **RC** (union representation election petitions, 24,202 cases).
-The following subtypes were excluded because they represent fundamentally different labor relations processes that would introduce noise into the organizing maturity model — RD (decertification petitions filed to *remove* an existing union), RM (employer-initiated election petitions), UC (unit clarification, an administrative procedure for existing bargaining units), UD (deauthorization petitions), AC (amendment of certification), and WH (wage-hour cases).
-
-Deduplication removed **2,832 duplicate** rows confirmed as identical across all fields. 2 cases filed under non-U.S. jurisdiction codes — SK (Saskatchewan, Canada) and AE (Armed Forces Europe) — were removed to restrict the analysis to domestic filings. Finally, 40 cases with negative `duration_days` values (Date Closed preceding Date Filed, a source data entry error in the NLRB system) and 2 open-status cases with erroneous closure dates were nullified rather than dropped, preserving the cases for non-duration analysis while preventing them from distorting survival models.
+Deduplication removed **2,832** duplicate rows confirmed as identical across all fields. Two cases filed under non-U.S. jurisdiction codes — SK (Saskatchewan, Canada) and AE (Armed Forces Europe) — were removed to restrict the analysis to domestic filings. Finally, 40 cases with negative `duration_days` values (Date Closed preceding Date Filed, a source data entry error in the NLRB system) and 2 open-status cases with erroneous closure dates were nullified rather than dropped, preserving the cases for non-duration analysis while preventing them from distorting survival models.
 
 -----
 
@@ -111,9 +108,7 @@ ULP Charge Filed → RC Petition Filed → Election Held → Union Certified
 (Grievance expressed) (Formal organizing) (Voting stage) (Contract begins)
 ```
 
-### Four Policy Regimes
-
-NLRB enforcement philosophy changes dramatically with each presidential administration. We divided the 12.75-year study period into four regimes:
+The central research question is: **What quantitative factors predict whether a workplace progresses from Level 1 to Level 2?** In other words, when does simmering discontent (ULP filings) turn into organized action (a union election petition)?
 
 |Period |Dates |Key Policy Characteristics |
 |-----------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -128,7 +123,7 @@ NLRB enforcement philosophy changes dramatically with each presidential administ
 
 ### Finding 1: ULP Filings Are a Leading Indicator of Union Petitions
 
-Panel fixed-effects regression shows that a one-unit increase in CA filings in the prior quarter predicts a **0.051-unit increase** in RC petitions in the current quarter (p < .001), controlling for state fixed effects, seasonal patterns, and administrative regime. Two-quarter and four-quarter lags are also positive and significant (β=+0.021, p=.005; β=+0.026, p<.001), meaning ULP activity up to a year prior still predicts current organizing.
+Panel fixed-effects regression shows that a one-unit increase in CA filings in the prior quarter predicts a 0.051-unit increase in RC petitions in the current quarter (p < .001), controlling for state fixed effects, seasonal patterns, and administrative regime. Two-quarter and four-quarter lags are also positive and significant (β=+0.021, p=.005; β=+0.026, p<.001), meaning ULP activity up to a year prior still predicts current organizing.
 
 States experiencing a surge in employer-side ULP complaints today will see more union election petitions next quarter.
 
@@ -155,9 +150,7 @@ The NLRB’s August 2023 *Cemex Construction* decision fundamentally altered the
 |Certification success rate |48.6% |51.4% |55.0% |**55.6%**|
 |Coercive Rules allegations (% of CA)|7.8% |6.2% |9.1% |**11.5%**|
 
-The Cemex Era regime has the highest petition volume, highest success rate, and highest prevalence of Coercive Rules allegations in the dataset. All differences are statistically significant (Kruskal-Wallis p < .001 for volume; Chi-square p < .001 for certification rates).
-
-Under the current legal framework, employers face a structurally higher baseline risk of organizing. The margin for error in labor relations compliance has narrowed — mistakes in election conduct can now result in automatic bargaining orders rather than re-run elections.
+The Cemex Era regime has the highest petition volume, highest success rate, and highest prevalence of Coercive Rules allegations in the dataset. All differences are statistically significant (Kruskal-Wallis p < .001 for volume; Chi-square p < .001 for certification rates). Under the current legal framework, employers face a structurally higher baseline risk of organizing. The margin for error in labor relations compliance has narrowed — mistakes in election conduct can now result in automatic bargaining orders rather than re-run elections.
 
 ### Finding 4: Discrimination Cases Are the Strongest Trigger for Organizing
 
@@ -180,7 +173,7 @@ Nearly three in ten workplaces that received an RC petition had at least one pri
 
 ### Finding 6: Southern States Show Differentiated Organizing Patterns
 
-While traditional union strongholds (CA, NY, IL) maintain steady volumes, the **South** shows a sharp split between two patterns. Southern Industrial Belt states with concentrations of foreign manufacturer investment (**TN, NC, GA, AL, KY, SC, MS**) show substantial Cemex Era growth — Tennessee +86% over Employer-Favorable-era baseline, Kentucky +52%, Georgia +46%, North Carolina +40%. By contrast, traditional South states (LA, FL, TX) follow other trajectories. This pattern suggests that organizing is expanding into regions where workforce composition has shifted toward larger industrial employers, particularly EV and auto manufacturing.
+While traditional union strongholds (CA, NY, IL) maintain steady volumes, the South shows a sharp split between two patterns. Southern Industrial Belt states with concentrations of foreign manufacturer investment (TN, NC, GA, AL, KY, SC, MS) show substantial Cemex Era growth — Tennessee +86% over Employer-Favorable-era baseline, Kentucky +52%, Georgia +46%, North Carolina +40%. By contrast, traditional South states (LA, FL, TX) follow other trajectories. This pattern suggests that organizing is expanding into regions where workforce composition has shifted toward larger industrial employers, particularly EV and auto manufacturing.
 
 ### Finding 7: Cemex Doctrine as Natural Experiment — Causal Evidence
 
@@ -259,7 +252,7 @@ All figures are generated by `scripts/04_visualizations.py` and saved to the `fi
 **The six metrics and why each was chosen.**
 
 - **248 days** — The median time from an employer’s first CA charge to a first RC petition at the same facility, among all employers where the transition occurred within three years. This is the operational planning horizon: an ER team that receives a CA charge and does not address its root cause has roughly eight months before that unresolved grievance is likely to escalate into a formal organizing attempt.
-- **55.6%** — The union certification rate for RC petitions filed under the Cemex Era regime (August 2023–December 2024). Unions win more than half of all elections conducted under current NLRB rules, the highest success rate in the 12.75-year study period. For comparison, the Employer-Favorable-era rate was 51.4%.
+- **55.6%** — The union certification rate for RC petitions filed under the Cemex Era regime (August 2023–September 2025). Unions win more than half of all elections conducted under current NLRB rules, the highest success rate in the 12.75-year study period. For comparison, the Employer-Favorable-era rate was 51.4%.
 - **1.68×** — The hazard ratio for discrimination (Section 8(a)(3)) allegations from the Cox proportional hazards model. An employer charged with discriminatory discharge or discipline is 68% more likely to face a union petition than an otherwise identical employer without that allegation. This is the single strongest case-level predictor in the model, and its effect intensifies to HR=4.07 under the Cemex Era regime.
 - **+56.4%** — The year-over-year increase in RC petitions from 2021 to 2022. This was the largest single-year jump in the study period and marks the structural turning point in the post-COVID organizing wave.
 - **79 cases** — The Cemex Era ULP accumulation threshold (γ) from the Hansen threshold regression. When a state reaches 79 CA filings in a single quarter, the marginal effect of each additional filing on RC petition volume increases. Under prior regimes this threshold was substantially higher (90–126 cases), meaning the current regulatory environment converts worker discontent into formal organizing activity at a lower friction point.
@@ -269,11 +262,10 @@ All figures are generated by `scripts/04_visualizations.py` and saved to the `fi
 
 -----
 
-### A1. Monthly NLRB Filings, 2015–2024
+### A1. Monthly NLRB Filings, 2013–2025
+<img width="2556" height="1111" alt="Monthly NLRB Filings" src="https://github.com/user-attachments/assets/078a9c8a-8722-4b3e-ada0-ac07adf44aac" />
 
-![Monthly Time Series](figures/a1_monthly_timeseries.png)
-
-**What this chart shows.** A dual-axis time series covering every month from January 2015 through December 2024. The left vertical axis and the dark ink line track monthly CA filings — charges alleging employer unfair labor practices under Section 8(a) of the NLRA. The right vertical axis and the **GT Focus Gold** line track monthly RC petition filings — formal worker requests to hold a union representation election. Four alternating parchment and off-white background bands mark the four presidential policy regimes, allowing the viewer to simultaneously read absolute filing volumes and the policy context in which they occurred.
+**What this chart shows.** A dual-axis time series covering every month from January 2013 through September 2025. The left vertical axis and the dark ink line track monthly CA filings — charges alleging employer unfair labor practices under Section 8(a) of the NLRA. The right vertical axis and the **GT Focus Gold** line track monthly RC petition filings — formal worker requests to hold a union representation election. Four alternating parchment and off-white background bands mark the four presidential policy regimes, allowing the viewer to simultaneously read absolute filing volumes and the policy context in which they occurred.
 
 **COVID-19 annotation.** A warm-tinted band covers March 11 through September 30, 2020. March 11, 2020 is the date the World Health Organization declared COVID-19 a global pandemic. The band ends September 30, 2020, when broad economic reopening was underway across most U.S. states. A dashed red vertical line marks the exact declaration date, and a small labeled pill annotation identifies the period. The annotation is present because the 2020 Q2 RC trough — the lowest monthly count in the study period at 249 petitions — falls within the Employer-Favorable administrative regime band. Without this marker, a reader scanning the chart could attribute that trough to NLRB policy suppression rather than to the pandemic shutdown. The annotation makes explicit that the 2020 dip is an external shock, not a policy outcome, which is essential for correctly interpreting the Employer-Favorable-era monthly average (131 petitions) cited in chart A2.
 
@@ -290,7 +282,8 @@ All figures are generated by `scripts/04_visualizations.py` and saved to the `fi
 
 ### A2. RC Petition Volume & Union Win Rate by Policy Regime
 
-![Period Bars](figures/a2_period_bars.png)
+<img width="2020" height="1178" alt="RC Petition Volume   Union Win Rate by Policy Regime" src="https://github.com/user-attachments/assets/59199582-adfc-4a08-b3af-d3413ce530ce" />
+
 
 **What this chart shows.** A paired visualization comparing the four administrative periods on two dimensions simultaneously. The vertical bars (left axis) show the monthly average number of RC petitions filed during each regime. All four bars share a uniform muted gray color so the visual focus rests on bar height, not on the regime color coding. The GT Focus Gold line with circular markers (right axis) shows the union certification rate — the percentage of closed RC cases in which the union won the election and received NLRB certification — for each regime. Percentage labels are positioned directly above each marker to maintain a clean reading line.
 
@@ -306,7 +299,7 @@ The Employer-Favorable bar incorporates the COVID-19 pandemic trough (see A1). W
 
 ### B1. Annual RC Petitions by State — Top 20 States
 
-![State Heatmap](figures/b1_state_heatmap.png)
+<img width="1697" height="1793" alt="Annual RC Petitions by State - Top 20" src="https://github.com/user-attachments/assets/c9469dd5-574e-4f9d-8d46-cf35a6772e33" />
 
 **What this chart shows.** A heatmap in which the 20 states with the highest total RC petition volume across the full study period are listed on the vertical axis, and the four administrative regimes appear as columns on the horizontal axis. Each cell displays the annualized petition count for that state-regime combination — calculated by dividing the total petitions filed during the regime by the number of years in that regime (Pro-Labor Expansion: 4.05 years; Employer-Favorable: 4.0 years; Labor Restoration: 2.59 years; Cemex Era: 2.10 years). Annualizing removes the distortion caused by regimes of unequal length. Color intensity scales from pale blue (low annual volume) to deep GT Navy (high annual volume), using a custom two-tone gradient anchored to GT Navy.
 
@@ -322,7 +315,9 @@ The analytically important signal is in the middle of the chart. States such as 
 
 ### B2. Southern States — Annualized RC Petitions
 
-![Southern Heatmap](figures/b2_southern_heatmap.png)
+<img width="2347" height="1031" alt="ULP Allegation Prevalence by Policy Regime" src="https://github.com/user-attachments/assets/f8ee6c85-2742-468f-961a-8daef2973b54" />
+<img width="1678" height="1639" alt="Southern States - Annualized RC Petitions" src="https://github.com/user-attachments/assets/08b9cdd9-d07e-49f5-9317-0d1b057d18a6" />
+
 
 **What this chart shows.** A focused heatmap covering only the 13 Southern U.S. states (Census Bureau South Region: AL, AR, FL, GA, KY, LA, MS, NC, OK, SC, TN, TX, VA, WV — minus DC) with the same four-period column structure and the same GT Navy intensity scale used in B1. Southern Industrial Belt states with concentrated foreign manufacturer investment (KY, TN, GA, AL, SC, NC, MS — automotive and EV plants: Hyundai, Toyota, Volkswagen, BMW, Mercedes, Volvo, Rivian) are indicated in the text below the chart. States are sorted by total petition volume across all four periods.
 
@@ -340,7 +335,7 @@ The South does not move as a single block. Three distinct patterns emerge:
 
 ### C1. ULP Allegation Prevalence by Policy Regime
 
-![Theme Heatmap](figures/c1_theme_heatmap.png)
+<img width="2347" height="1031" alt="ULP Allegation Prevalence by Policy Regime" src="https://github.com/user-attachments/assets/7704c554-1249-4a19-9e79-b004ef6fa904" />
 
 **What this chart shows.** A heatmap with nine allegation themes on the vertical axis and the four policy regimes on the horizontal axis. Each cell shows the percentage of CA cases filed in that regime that contained the given allegation type. Allegation types were extracted from the NLRB Allegations field using structured regex patterns against 55 unique NLRB-coded phrases. Color intensity scales from white (low prevalence) to deep GT Navy (high prevalence). The chart is read row-by-row: a row that darkens consistently from left to right indicates a theme that is growing across regimes.
 
@@ -355,8 +350,8 @@ The “Coercive Rules” row is the most dramatic. It darkens from 6.2% under Em
 -----
 
 ### D1. Time to First Union Petition After Initial ULP Charge
+<img width="1944" height="1303" alt="Time to First Union Petition After Initial ULP Charge" src="https://github.com/user-attachments/assets/1af1e0c5-676d-4a1f-9dc9-ccf9b009537b" />
 
-![Survival Curves](figures/d1_survival_curves.png)
 
 **What this chart shows.** Kaplan-Meier survival curves estimated for 80,529 unique employers, each tracked from the date of their first CA charge through either their first RC petition (the event) or the end of the study period (right-censoring). Survival is defined as the probability that an employer has not yet received an RC petition at a given number of days after the first CA charge. Each of the four administrative periods is plotted as a separate step-function curve with a faint confidence band. The four curves are colored in the regime palette: slate gray (Pro-Labor Expansion), ink black (Employer-Favorable), GT Navy (Labor Restoration), and GT Focus Gold (Cemex Era).
 
@@ -364,7 +359,7 @@ The y-axis spans only 0.975 to 1.000. This narrow range is deliberate. Overall, 
 
 **What the chart reveals.**
 
-The Pro-Labor Expansion curve (slate gray) falls most steeply — employers who received their first CA charge between 2015 and January 2017 had the highest probability of subsequently receiving an RC petition. The Employer-Favorable curve (ink black) falls least steeply, reflecting the documented suppressive effect of Employer-Favorable-era NLRB policy on organizing activity — fewer charges translated into formal petitions during this period. The Labor Restoration (GT Navy) and Cemex Era (GT Focus Gold) curves fall between these two extremes and are not statistically distinguishable from each other, though both are distinguishable from the Employer-Favorable curve.
+The Pro-Labor Expansion curve (slate gray) falls most steeply — employers who received their first CA charge between 2013 and January 2017 had the highest probability of subsequently receiving an RC petition. The Employer-Favorable curve (ink black) falls least steeply, reflecting the documented suppressive effect of Employer-Favorable-era NLRB policy on organizing activity — fewer charges translated into formal petitions during this period. The Labor Restoration (GT Navy) and Cemex Era (GT Focus Gold) curves fall between these two extremes and are not statistically distinguishable from each other, though both are distinguishable from the Employer-Favorable curve.
 
 Log-rank tests confirm that the Pro-Labor Expansion curve is statistically different from all three later regimes (all p < .001). The Employer-Favorable curve is statistically different from Pro-Labor Expansion (p < .001) but not from the two Biden-era curves, consistent with the interpretation that the 2021 change in NLRB leadership partially — but not fully — reversed the Employer-Favorable-era suppression.
 
@@ -374,7 +369,8 @@ Log-rank tests confirm that the Pro-Labor Expansion curve is statistically diffe
 
 ### D2. Risk Factors for CA → RC Transition — Cox Proportional Hazards
 
-![Forest Plot](figures/d2_forest_plot.png)
+<img width="2017" height="1217" alt="Risk Factors for CA-RC Transition Cox Proportional Hazards" src="https://github.com/user-attachments/assets/69247edb-1123-486b-8d6d-ed0477107f15" />
+
 
 **What this chart shows.** A forest plot displaying the hazard ratios, 95% confidence intervals, and statistical significance of the seven case-level allegation and structural factors from the Cox proportional hazards model. Administrative period dummies (Employer-Favorable, Labor Restoration, Cemex Era) were included in the model fit to control for time-varying baseline hazards but are excluded from the visual display because their effects are already shown in chart D1 and would otherwise compete with the case-level factors that are the focus of this chart.
 
@@ -394,9 +390,9 @@ On the suppressive side, the “Retaliation” indicator (HR = 0.50) appears cou
 
 ### D3. Cemex Doctrine as Natural Experiment — Difference-in-Differences
 
-![DiD Natural Experiment](figures/d3_did_natural_experiment.png)
+<img width="2067" height="1450" alt="Discrimination -RC Conversion" src="https://github.com/user-attachments/assets/d18da8c8-ca61-4ebb-95b8-355fd779dd87" />
 
-**What this chart shows.** A parallel-trends visualization implementing a Difference-in-Differences (DiD) causal estimation. The August 25, 2023 *Cemex Construction* decision is treated as an exogenous policy shock — employers and unions did not choose its timing, and its effect on enforcement standards was immediate. We compare two matched 12-month cohorts of employers who received their first CA charge: the **Pre-Cemex cohort** (Aug 2022 – Aug 2023, n = 6,289) and the **Cemex Era cohort** (Aug 2023 – Aug 2024, n = 7,319). The outcome is the probability that an RC petition follows the CA charge within 180 days.
+**What this chart shows.** A parallel-trends visualization implementing a Difference-in-Differences (DiD) causal estimation. The August 25, 2023 *Cemex Construction* decision is treated as an exogenous policy shock — employers and unions did not choose its timing, and its effect on enforcement standards was immediate. We compare two matched 12-month cohorts of employers who received their first CA charge: the **Pre-Cemex cohort** (Aug 2022 – Aug 2023, n = 6,289) and the **Cemex Era cohort** (Aug 2023 – Aug 2024, n = 7,243). The outcome is the probability that an RC petition follows the CA charge within 180 days.
 
 The horizontal axis shows the two time periods, separated by a dotted GT Focus Gold vertical line marking the Cemex Doctrine effective date. Two trend lines are plotted: the dark gray line tracks the RC conversion rate for employers without discrimination allegations (control group, used to identify general policy-environment shifts), and the GT Navy line tracks employers with discrimination allegations (treatment group). The dashed line shows the counterfactual: what the discrimination cohort’s Cemex Era rate would have been if it had moved in parallel with the no-discrimination control. The vertical Dark Gold arrow at the right of the chart isolates the DiD effect — the gap between the actual Cemex Era rate for the discrimination group and the counterfactual.
 
@@ -437,7 +433,7 @@ nlrb-unionization-risk/
 │
 ├── figures/
 │ ├── f1_kpi_summary.png # Executive summary — 6 key metrics
-│ ├── a1_monthly_timeseries.png # Monthly CA + RC filings, 2015–2024
+│ ├── a1_monthly_timeseries.png # Monthly CA + RC filings, 2013–2025
 │ ├── a2_period_bars.png # RC volume & certification rate by regime
 │ ├── b1_state_heatmap.png # Annual RC petitions, top 20 states
 │ ├── b2_southern_heatmap.png # Southern states deep-dive (13 states)
