@@ -315,9 +315,7 @@ The analytically important signal is in the middle of the chart. States such as 
 
 ### B2. Southern States — Annualized RC Petitions
 
-<img width="2347" height="1031" alt="ULP Allegation Prevalence by Policy Regime" src="https://github.com/user-attachments/assets/f8ee6c85-2742-468f-961a-8daef2973b54" />
 <img width="1678" height="1639" alt="Southern States - Annualized RC Petitions" src="https://github.com/user-attachments/assets/08b9cdd9-d07e-49f5-9317-0d1b057d18a6" />
-
 
 **What this chart shows.** A focused heatmap covering only the 13 Southern U.S. states (Census Bureau South Region: AL, AR, FL, GA, KY, LA, MS, NC, OK, SC, TN, TX, VA, WV — minus DC) with the same four-period column structure and the same GT Navy intensity scale used in B1. Southern Industrial Belt states with concentrated foreign manufacturer investment (KY, TN, GA, AL, SC, NC, MS — automotive and EV plants: Hyundai, Toyota, Volkswagen, BMW, Mercedes, Volvo, Rivian) are indicated in the text below the chart. States are sorted by total petition volume across all four periods.
 
@@ -350,8 +348,8 @@ The “Coercive Rules” row is the most dramatic. It darkens from 6.2% under Em
 -----
 
 ### D1. Time to First Union Petition After Initial ULP Charge
-<img width="1944" height="1303" alt="Time to First Union Petition After Initial ULP Charge" src="https://github.com/user-attachments/assets/1af1e0c5-676d-4a1f-9dc9-ccf9b009537b" />
 
+<img width="1944" height="1303" alt="Time to First Union Petition After Initial ULP Charge" src="https://github.com/user-attachments/assets/1af1e0c5-676d-4a1f-9dc9-ccf9b009537b" />
 
 **What this chart shows.** Kaplan-Meier survival curves estimated for 80,529 unique employers, each tracked from the date of their first CA charge through either their first RC petition (the event) or the end of the study period (right-censoring). Survival is defined as the probability that an employer has not yet received an RC petition at a given number of days after the first CA charge. Each of the four administrative periods is plotted as a separate step-function curve with a faint confidence band. The four curves are colored in the regime palette: slate gray (Pro-Labor Expansion), ink black (Employer-Favorable), GT Navy (Labor Restoration), and GT Focus Gold (Cemex Era).
 
@@ -370,7 +368,6 @@ Log-rank tests confirm that the Pro-Labor Expansion curve is statistically diffe
 ### D2. Risk Factors for CA → RC Transition — Cox Proportional Hazards
 
 <img width="2017" height="1217" alt="Risk Factors for CA-RC Transition Cox Proportional Hazards" src="https://github.com/user-attachments/assets/69247edb-1123-486b-8d6d-ed0477107f15" />
-
 
 **What this chart shows.** A forest plot displaying the hazard ratios, 95% confidence intervals, and statistical significance of the seven case-level allegation and structural factors from the Cox proportional hazards model. Administrative period dummies (Employer-Favorable, Labor Restoration, Cemex Era) were included in the model fit to control for time-varying baseline hazards but are excluded from the visual display because their effects are already shown in chart D1 and would otherwise compete with the case-level factors that are the focus of this chart.
 
